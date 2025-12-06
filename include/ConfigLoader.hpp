@@ -1,9 +1,9 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <filesystem>
 #include <optional>
+#include <string>
+#include <vector>
 
 namespace fs = std::filesystem;
 
@@ -13,23 +13,23 @@ struct SortRule {
 };
 
 struct ConfigData {
-    std::string watch_folder;
+    std::string main_folder;
     std::vector<SortRule> rules;
     bool is_valid = false;
 };
 
 class ConfigLoader {
-    public:
-        static ConfigLoader& getInstance(const fs::path& configPath);
-        
-        std::optional<ConfigData> loadConfig();
+   public:
+    static ConfigLoader& getInstance(const fs::path& configPath);
 
-        ConfigData getConfigData() const;
+    std::optional<ConfigData> loadConfig();
 
-    private:
-        ConfigLoader(const fs::path& configPath);
+    ConfigData getConfigData() const;
 
-        const fs::path m_configPath;
-    
-        ConfigData m_configData;
+   private:
+    ConfigLoader(const fs::path& configPath);
+
+    const fs::path m_configPath;
+
+    ConfigData m_configData;
 };
