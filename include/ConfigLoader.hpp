@@ -14,7 +14,7 @@ struct SortRule {
 
 struct ConfigData {
     std::string main_folder;
-    std::vector<SortRule> rules;
+    std::vector<SortRule> rules;  // TODO: change to map for faster lookup?
     bool is_valid = false;
 };
 
@@ -32,4 +32,9 @@ class ConfigLoader {
     const fs::path m_configPath;
 
     ConfigData m_configData;
+
+    // Prevent copying and assignment (standard for Singleton)
+
+    ConfigLoader(const ConfigLoader&) = delete;
+    ConfigLoader& operator=(const ConfigLoader&) = delete;
 };

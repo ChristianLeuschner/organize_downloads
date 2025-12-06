@@ -4,6 +4,8 @@
 #include <cstring>    // Für strerror() oder perror()
 #include <iostream>
 
+#include "FileSorter.hpp"
+
 // (de)constructor
 FileWatcher::FileWatcher(ConfigLoader& configLoader) : m_configLoader(configLoader) {}
 FileWatcher::~FileWatcher() { stop(); }
@@ -145,6 +147,6 @@ std::string FileWatcher::getHomePath() {
 // Fiktive Funktion, die später den FileSorter auslösen wird
 void triggerSorter(const fs::path& filePath, ConfigLoader& configLoader) {
     // Hier würde später der FileSorter::sort() Aufruf stehen
-    std::cout << "DEBUG: Sortierungs-Event ausgelöst für: " << filePath.filename().string()
-              << std::endl;
+    std::cout << "DEBUG: sort event triggered for: " << filePath.filename().string() << std::endl;
+    FileSorter::getInstance().sort(filePath, configLoader.getConfigData());
 }
