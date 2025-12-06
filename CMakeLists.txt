@@ -15,6 +15,8 @@ set(SOURCE_FILES
 
 add_executable(filesorter ${SOURCE_FILES})
 
+target_include_directories(filesorter PRIVATE extern/json/include)
+
 target_link_libraries(filesorter
     PRIVATE
     pthread

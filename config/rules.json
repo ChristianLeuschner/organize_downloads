@@ -1,0 +1,11 @@
+{
+    "watch_folder": "$HOME/Downloads",
+    "rules": [
+        { "extension": ".pdf", "destination": "$HOME/Downloads/PDFs"},
+        
+        { "extension": ".jpg", "destination": "$HOME/Downloads/Images" },
+        { "extension": ".png", "destination": "$HOME/Downloads/Images" },
+        { "extension": ".heif", "destination": "$HOME/Downloads/Images" }
+
+    ]
+}
