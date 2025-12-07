@@ -1,11 +1,181 @@
 {
     "watch_folder": "$HOME/Downloads",
     "rules": [
-        { "extension": ".pdf", "destination": "$HOME/Downloads/PDFs"},
-        
-        { "extension": ".jpg", "destination": "$HOME/Downloads/Images" },
-        { "extension": ".png", "destination": "$HOME/Downloads/Images" },
-        { "extension": ".heif", "destination": "$HOME/Downloads/Images" }
-
+        {
+            "extension": ".pdf",
+            "destination": "$HOME/Downloads/PDFs"
+        },
+        {
+            "extension": ".jpg",
+            "destination": "$HOME/Downloads/Images"
+        },
+        {
+            "extension": ".jpeg",
+            "destination": "$HOME/Downloads/Images"
+        },
+        {
+            "extension": ".png",
+            "destination": "$HOME/Downloads/Images"
+        },
+        {
+            "extension": ".gif",
+            "destination": "$HOME/Downloads/Images"
+        },
+        {
+            "extension": ".webp",
+            "destination": "$HOME/Downloads/Images"
+        },
+        {
+            "extension": ".svg",
+            "destination": "$HOME/Downloads/Images"
+        },
+        {
+            "extension": ".heif",
+            "destination": "$HOME/Downloads/Images"
+        },
+        {
+            "extension": ".heic",
+            "destination": "$HOME/Downloads/Images"
+        },
+        {
+            "extension": ".deb",
+            "destination": "$HOME/Downloads/Installer"
+        },
+        {
+            "extension": ".AppImage",
+            "destination": "$HOME/Downloads/Installer"
+        },
+        {
+            "extension": ".iso",
+            "destination": "$HOME/Downloads/Installer"
+        },
+        {
+            "extension": ".run",
+            "destination": "$HOME/Downloads/Installer"
+        },
+        {
+            "extension": ".sh",
+            "destination": "$HOME/Downloads/Installer"
+        },
+        {
+            "extension": ".part",
+            "destination": "$HOME/Downloads/Canceled"
+        },
+        {
+            "extension": ".crdownload",
+            "destination": "$HOME/Downloads/Canceled"
+        },
+        {
+            "extension": ".cpp",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".hpp",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".c",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".h",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".py",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".js",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".ts",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".html",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".css",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".json",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".xml",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".yaml",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".yml",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".java",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".rs",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".go",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".sql",
+            "destination": "$HOME/Downloads/Code"
+        },
+        {
+            "extension": ".doc",
+            "destination": "$HOME/Downloads/Office"
+        },
+        {
+            "extension": ".docx",
+            "destination": "$HOME/Downloads/Office"
+        },
+        {
+            "extension": ".xls",
+            "destination": "$HOME/Downloads/Office"
+        },
+        {
+            "extension": ".xlsx",
+            "destination": "$HOME/Downloads/Office"
+        },
+        {
+            "extension": ".ppt",
+            "destination": "$HOME/Downloads/Office"
+        },
+        {
+            "extension": ".pptx",
+            "destination": "$HOME/Downloads/Office"
+        },
+        {
+            "extension": ".odt",
+            "destination": "$HOME/Downloads/Office"
+        },
+        {
+            "extension": ".ods",
+            "destination": "$HOME/Downloads/Office"
+        },
+        {
+            "extension": ".odp",
+            "destination": "$HOME/Downloads/Office"
+        },
+        {
+            "extension": ".csv",
+            "destination": "$HOME/Downloads/Office"
+        },
+        {
+            "extension": ".txt",
+            "destination": "$HOME/Downloads/Office"
+        }
     ]
 }

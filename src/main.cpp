@@ -2,6 +2,7 @@
 
 #include <csignal>  // For signal handling
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <thread>
 

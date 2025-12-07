@@ -25,6 +25,7 @@ class ConfigLoader {
 
     std::optional<ConfigData> loadConfig();
 
+    fs::path getConfigPath() const { return m_configPath; }
     ConfigData getConfigData() const;
 
    private:

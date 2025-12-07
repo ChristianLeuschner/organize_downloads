@@ -11,6 +11,7 @@ set(SOURCE_FILES
     src/ConfigLoader.cpp
     src/FileWatcher.cpp
     src/FileSorter.cpp
+    src/Utils.cpp
 )
 
 add_executable(filesorter ${SOURCE_FILES})

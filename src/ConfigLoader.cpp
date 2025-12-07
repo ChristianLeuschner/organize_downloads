@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 
+#include "Utils.hpp"
 #include "extern/json/include/nlohmann/json.hpp"
 
 // read JSON
@@ -17,8 +18,7 @@ std::optional<SortRule> parseRule(const json& j) {
     }
     SortRule rule;
     rule.extension = j["extension"].get<std::string>();
-    rule.destination = j["destination"].get<std::string>();
-
+    rule.destination = Utils::expandPath(j["destination"].get<std::string>());
     // extension should start with a dot
     if (rule.extension.empty() || rule.extension.front() != '.') {
         return std::nullopt;
@@ -56,7 +56,7 @@ std::optional<ConfigData> ConfigLoader::loadConfig() {
         }
 
         ConfigData configData;
-        configData.main_folder = j["watch_folder"].get<std::string>();
+        configData.main_folder = Utils::expandPath(j["watch_folder"].get<std::string>());
         for (const auto& json_rule : j["rules"]) {
             if (auto rule = parseRule(json_rule)) {
                 configData.rules.push_back(std::move(*rule));

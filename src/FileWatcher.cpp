@@ -1,11 +1,11 @@
 #include "FileWatcher.hpp"
 
-#include <algorithm>  // Für std::min/max
-#include <cstring>    // Für strerror() oder perror()
+#include <cstring>  // Für strerror() oder perror()
 #include <iostream>
 #include <thread>
 
 #include "FileSorter.hpp"
+#include "Utils.hpp"
 
 // (de)constructor
 FileWatcher::FileWatcher(ConfigLoader& configLoader) : m_configLoader(configLoader) {}
@@ -74,7 +74,7 @@ bool FileWatcher::setupWatch() {
     std::cout << "Watching folder: " << config.main_folder << std::endl;
 
     // add watch for config file
-    std::string configPath = getHomePath() + "/.config/filesorter/rules.json";
+    std::string configPath = Utils::getHomePath() + m_configLoader.getConfigPath().string();
     m_config_watch_fd = inotify_add_watch(m_inotify_fd, configPath.c_str(), IN_CLOSE_WRITE);
     if (m_config_watch_fd < 0) {
         perror("watch_config_file");
@@ -134,41 +134,6 @@ void FileWatcher::runEventLoop() {
             i += sizeof(struct inotify_event) + event->len;
         }
     }
-}
-
-std::string FileWatcher::getHomePath() {
-    const char* homeDir = getenv("HOME");
-    if (homeDir) {
-        return std::string(homeDir);
-    }
-
-    // 2. POSIX-Fallback: thread safe
-
-    // get necessary buffer size
-    long bufsize = sysconf(_SC_GETPW_R_SIZE_MAX);
-    if (bufsize == -1) {
-        bufsize = 16384;
-    }
-
-    std::string buffer(bufsize, '\0');
-
-    struct passwd pwd;
-    struct passwd* result = nullptr;
-    int s = getpwuid_r(getuid(), &pwd, buffer.data(), bufsize, &result);
-
-    if (result == nullptr) {
-        if (s == 0) {
-            // User not found
-            throw std::runtime_error("Unable to determine home directory: User ID not found.");
-        } else {
-            // Error during call
-            throw std::runtime_error("Unable to determine home directory: " +
-                                     std::string(strerror(s)));
-        }
-    }
-
-    // Ergebnis ist thread-sicher in der 'pwd'-Struktur gespeichert
-    return std::string(pwd.pw_dir);
 }
 
 // Fiktive Funktion, die später den FileSorter auslösen wird

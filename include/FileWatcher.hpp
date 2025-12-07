@@ -38,5 +38,4 @@ class FileWatcher {
 
     // helper
     bool setupWatch();
-    std::string getHomePath();
 };
