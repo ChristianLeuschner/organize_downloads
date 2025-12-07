@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <mutex>
 #include <optional>
 #include <string>
 #include <vector>
@@ -32,6 +33,7 @@ class ConfigLoader {
     const fs::path m_configPath;
 
     ConfigData m_configData;
+    mutable std::mutex m_mutex;
 
     // Prevent copying and assignment (standard for Singleton)
 

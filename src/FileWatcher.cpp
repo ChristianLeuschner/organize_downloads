@@ -3,6 +3,7 @@
 #include <algorithm>  // Für std::min/max
 #include <cstring>    // Für strerror() oder perror()
 #include <iostream>
+#include <thread>
 
 #include "FileSorter.hpp"
 
@@ -120,7 +121,12 @@ void FileWatcher::runEventLoop() {
             if (event->wd == m_config_watch_fd) {
                 if (event->mask & IN_CLOSE_WRITE) {
                     std::cout << "  Config file changed, reloading..." << std::endl;
-                    m_configLoader.loadConfig();
+                    if (m_configLoader.loadConfig().has_value()) {
+                        std::cout << "  Config reloaded successfully." << std::endl;
+                    } else {
+                        std::cerr << "ERROR: Reload failed. Keeping old configuration."
+                                  << std::endl;
+                    }
                 }
             }
 
@@ -134,14 +140,35 @@ std::string FileWatcher::getHomePath() {
     const char* homeDir = getenv("HOME");
     if (homeDir) {
         return std::string(homeDir);
-    } else {
-        struct passwd* pwd = getpwuid(getuid());
-        if (pwd) {
-            return std::string(pwd->pw_dir);
+    }
+
+    // 2. POSIX-Fallback: thread safe
+
+    // get necessary buffer size
+    long bufsize = sysconf(_SC_GETPW_R_SIZE_MAX);
+    if (bufsize == -1) {
+        bufsize = 16384;
+    }
+
+    std::string buffer(bufsize, '\0');
+
+    struct passwd pwd;
+    struct passwd* result = nullptr;
+    int s = getpwuid_r(getuid(), &pwd, buffer.data(), bufsize, &result);
+
+    if (result == nullptr) {
+        if (s == 0) {
+            // User not found
+            throw std::runtime_error("Unable to determine home directory: User ID not found.");
         } else {
-            throw std::runtime_error("Unable to determine home directory.");
+            // Error during call
+            throw std::runtime_error("Unable to determine home directory: " +
+                                     std::string(strerror(s)));
         }
     }
+
+    // Ergebnis ist thread-sicher in der 'pwd'-Struktur gespeichert
+    return std::string(pwd.pw_dir);
 }
 
 // Fiktive Funktion, die später den FileSorter auslösen wird

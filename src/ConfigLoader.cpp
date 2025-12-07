@@ -64,9 +64,12 @@ std::optional<ConfigData> ConfigLoader::loadConfig() {
                 std::cerr << "Warning: Skipping invalid rule in config file." << std::endl;
             }
         }
-        configData.is_valid = true;
+
+        std::lock_guard<std::mutex> lock(m_mutex);
         // store loaded data
         m_configData = configData;
+        m_configData.is_valid = true;
+
         return m_configData;
 
     } catch (const json::parse_error& e) {
@@ -78,4 +81,7 @@ std::optional<ConfigData> ConfigLoader::loadConfig() {
     }
 }
 
-ConfigData ConfigLoader::getConfigData() const { return m_configData; }
+ConfigData ConfigLoader::getConfigData() const {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    return m_configData;
+}

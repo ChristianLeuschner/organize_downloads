@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 #include <atomic>
-#include <thread>
+#include <mutex>
 
 #include "ConfigLoader.hpp"
 
