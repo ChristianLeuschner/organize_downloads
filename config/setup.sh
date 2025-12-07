@@ -1,8 +1,9 @@
 #!/bin/bash
 
-set -e # Exit immediately if a command exits with a non-zero status
+set -e  # sofort beenden bei Fehlern
 
-# Variables 
+# Variablen
+
 APP_NAME="filesorter"
 BUILD_DIR="build"
 INSTALL_BIN_DIR="/usr/local/bin"
@@ -10,52 +11,61 @@ EXECUTABLE="$INSTALL_BIN_DIR/$APP_NAME"
 CONFIG_DIR="$HOME/.config/$APP_NAME"
 SERVICE_DIR="$HOME/.config/systemd/user"
 
-# 1. ---compile project---
+# --- 1. Projekt kompilieren ---
+
 echo "Installing the project..."
 mkdir -p "$BUILD_DIR"
 cd "$BUILD_DIR"
-cmake -DCMAKE_BUILD_TYPE=Release .. # configure CMake 
+cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j$(nproc)
 cd ..
 
-mkdir -p "$INSTALL_BIN_DIR"
-cp "$BUILD_DIR/$APP_NAME" "$EXECUTABLE" # copy executable to install directory
+# Binary installieren (sudo nur hier)
 
-# 2. create config file
+echo "Copying executable to $INSTALL_BIN_DIR..."
+sudo cp "$BUILD_DIR/$APP_NAME" "$EXECUTABLE"
+
+# --- 2. Config-Dateien erstellen ---
+
 echo "Creating default configuration..."
 mkdir -p "$CONFIG_DIR"
-cp -i ./rules.json "$CONFIG_DIR/rules.json" # copy default rules
-echo "Rules are configured in $CONFIG_DIR/rules.json."
+if [ ! -f "$CONFIG_DIR/rules.json" ]; then
+if [ -f "./config/rules.json" ]; then
+cp ./config/rules.json "$CONFIG_DIR/rules.json"
+echo "Default rules copied to $CONFIG_DIR/rules.json"
+else
+echo "WARNING: rules.json not found in project root. Please create it manually."
+fi
+else
+echo "Config already exists at $CONFIG_DIR/rules.json, skipping."
+fi
 
-# 3. generate systemd service
-echo "Generating systemd service..."
+# --- 3. Systemd User-Service erzeugen ---
+
+echo "Generating systemd user service..."
 mkdir -p "$SERVICE_DIR"
 cat <<EOF > "$SERVICE_DIR/$APP_NAME.service"
 [Unit]
-Description=Daemon service to fort files regarding their file extensions.
+Description=Daemon service to sort files according to their extensions
 After=network.target
 
 [Service]
 Type=simple
-
-# ExecStart ruft die installierte Binary mit der Config-Datei als Argument auf
 ExecStart=$EXECUTABLE $CONFIG_DIR/rules.json
-
-# Sorgt dafür, dass der Service bei einem Absturz neu gestartet wird
 Restart=on-failure
 
 [Install]
-# Stellt sicher, dass der Service beim Login des Benutzers gestartet wird
 WantedBy=default.target
 EOF
-echo "Systemd service created at $SERVICE_DIR/$APP_NAME.service."
+echo "Systemd user service created at $SERVICE_DIR/$APP_NAME.service"
 
-# 4. start user service
+# --- 4. User Service starten ---
+
 echo "Starting user service..."
 systemctl --user daemon-reload
 systemctl --user enable "$APP_NAME.service"
 systemctl --user restart "$APP_NAME.service"
 
 echo "---"
-echo "Installation finished. Test status with:"
+echo "Installation finished. Check service log with:"
 echo "journalctl --user -u $APP_NAME.service -f"

@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "Utils.hpp"
-#include "extern/json/include/nlohmann/json.hpp"
+#include "nlohmann/json.hpp"
 
 // read JSON
 namespace {

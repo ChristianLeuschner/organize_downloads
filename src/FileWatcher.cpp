@@ -7,6 +7,11 @@
 #include "FileSorter.hpp"
 #include "Utils.hpp"
 
+void triggerSorter(const fs::path& filePath, ConfigLoader& configLoader) {
+    std::cout << "DEBUG: sort event triggered for: " << filePath.filename().string() << std::endl;
+    FileSorter::getInstance().sort(filePath, configLoader.getConfigData());
+}
+
 // (de)constructor
 FileWatcher::FileWatcher(ConfigLoader& configLoader) : m_configLoader(configLoader) {}
 FileWatcher::~FileWatcher() { stop(); }
@@ -74,7 +79,8 @@ bool FileWatcher::setupWatch() {
     std::cout << "Watching folder: " << config.main_folder << std::endl;
 
     // add watch for config file
-    std::string configPath = Utils::getHomePath() + m_configLoader.getConfigPath().string();
+    std::string configPath = m_configLoader.getConfigPath().string();
+    std::cout << "Watching config file: " << configPath << std::endl;
     m_config_watch_fd = inotify_add_watch(m_inotify_fd, configPath.c_str(), IN_CLOSE_WRITE);
     if (m_config_watch_fd < 0) {
         perror("watch_config_file");
@@ -115,7 +121,9 @@ void FileWatcher::runEventLoop() {
                 if (event->mask & (IN_CLOSE_WRITE | IN_MOVED_TO)) {
                     fs::path filePath = m_configLoader.getConfigData().main_folder;
                     filePath /= event->name;  // append filename to path
-                    triggerSorter(filePath, m_configLoader);
+                    if (fs::exists(filePath)) {  // <- nur wenn die Datei noch existiert
+                        triggerSorter(filePath, m_configLoader);
+                    }
                 }
             }
             if (event->wd == m_config_watch_fd) {
@@ -136,9 +144,3 @@ void FileWatcher::runEventLoop() {
     }
 }
 
-// Fiktive Funktion, die später den FileSorter auslösen wird
-void triggerSorter(const fs::path& filePath, ConfigLoader& configLoader) {
-    // Hier würde später der FileSorter::sort() Aufruf stehen
-    std::cout << "DEBUG: sort event triggered for: " << filePath.filename().string() << std::endl;
-    FileSorter::getInstance().sort(filePath, configLoader.getConfigData());
-}

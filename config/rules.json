@@ -58,14 +58,6 @@
             "destination": "$HOME/Downloads/Installer"
         },
         {
-            "extension": ".part",
-            "destination": "$HOME/Downloads/Canceled"
-        },
-        {
-            "extension": ".crdownload",
-            "destination": "$HOME/Downloads/Canceled"
-        },
-        {
             "extension": ".cpp",
             "destination": "$HOME/Downloads/Code"
         },
