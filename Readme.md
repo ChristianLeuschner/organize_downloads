@@ -39,6 +39,7 @@ Run the provided setup script:
 
 ```bash
 cd config
+chmod +x setup.sh
 ./setup.sh
 ```
 
