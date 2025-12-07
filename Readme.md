@@ -38,9 +38,8 @@ git submodule update --init --recursive
 Run the provided setup script:
 
 ```bash
-cd config
-chmod +x setup.sh
-./setup.sh
+chmod +x ./config/setup.sh
+./config/setup.sh
 ```
 
 The script performs:
